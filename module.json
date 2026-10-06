@@ -1,0 +1,38 @@
+{
+  "id": "display-save-modifiers-module",
+  "title": "Display Save Modifiers",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Anthony Ciabatoni",
+      "flags": {}
+    },
+    {
+      "name": "Ben Segal",
+      "flags": {}
+    }
+  ],
+  "flags": {
+    "canUpload": true
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "styles": [
+    "styles/styles.css"
+  ],
+  "description": "Should show a button next to the save if its being modified for things like crit success on reg success etc"
+}
