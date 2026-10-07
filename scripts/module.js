@@ -5,26 +5,27 @@ Hooks.on('renderActorSheet', (app, html) => {
 
 	console.log(`[TEST] Character sheet rendered: ${actor.name}`, actor);
 
-	console.log(getDegreeOfSuccessAdjustments(actor));
-
-	const reflexLabel = html[0].querySelector(
-		'.saves li.roll-data[data-save="reflex"] .sidebar_label'
-	);
-
-	if (!reflexLabel || reflexLabel.querySelector('.my-button')) return;
-
-	const myButton = document.createElement('button');
-	myButton.type = 'button';
-	myButton.className = 'my-button';
-	myButton.setAttribute('aria-label', 'Show Reflex save modifiers');
-	myButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
-
-	reflexLabel.appendChild(myButton);
+	const modifiers = getDegreeOfSuccessAdjustments(actor);
+	console.log(modifiers)
+	modifiers.forEach(modifier => {
+		const label = html[0].querySelector(
+			`.saves li.roll-data[data-save="${modifier.selector}"] .sidebar_label`
+		);
+	
+		if (!label || label.querySelector('.my-button')) return;
+	
+		const myButton = document.createElement('button');
+		myButton.type = 'button';
+		myButton.className = 'my-button';
+		myButton.setAttribute('aria-label', 'Show save modifiers');
+		myButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+	
+		label.appendChild(myButton);
+	})
 });
 
 function getDegreeOfSuccessAdjustments(actor) {
 	const degreeOfSuccessRules = actor.rules.filter(rule => rule?.key === 'AdjustDegreeOfSuccess' && ['will', 'fortitude', 'reflex'].includes(rule?.selector));
-	console.log(degreeOfSuccessRules);
 	return degreeOfSuccessRules.map(rule => {
 		const degrees = mapDegreeOfSuccess(...(Object.entries(rule.adjustment)[0]))
 		return {
@@ -36,7 +37,6 @@ function getDegreeOfSuccessAdjustments(actor) {
 }
 
 function mapDegreeOfSuccess(key, value) {
-	console.log(key, value)
 	const degreesOfSuccess = [
 		'critical failure',
 		'failure',
