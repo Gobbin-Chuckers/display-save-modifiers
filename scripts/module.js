@@ -1,12 +1,25 @@
-Hooks.on('renderActorSheet', (app) => {
+Hooks.on('renderActorSheet', (app, html) => {
 	const actor = app.actor;
 
 	if (actor?.type !== 'character') return;
 
 	console.log(`[TEST] Character sheet rendered: ${actor.name}`, actor);
 
-	// const degreeOfSuccessRules = actor.rules.filter(rule => rule?.key === 'AdjustDegreeOfSuccess' && ['will', 'fortitude', 'reflex'].includes(rule?.selector));
 	console.log(getDegreeOfSuccessAdjustments(actor));
+
+	const reflexLabel = html[0].querySelector(
+		'.saves li.roll-data[data-save="reflex"] .sidebar_label'
+	);
+
+	if (!reflexLabel || reflexLabel.querySelector('.my-button')) return;
+
+	const myButton = document.createElement('button');
+	myButton.type = 'button';
+	myButton.className = 'my-button';
+	myButton.setAttribute('aria-label', 'Show Reflex save modifiers');
+	myButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+
+	reflexLabel.appendChild(myButton);
 });
 
 function getDegreeOfSuccessAdjustments(actor) {
