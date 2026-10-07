@@ -1,9 +1,20 @@
-Hooks.on("renderActorSheet", (app) => {
-  const actor = app.actor;
+Hooks.on("renderActorSheet", (app, html) => {
+    const actor = app.actor;
 
-  if (actor?.type !== "character") return;
+    if (actor?.type !== "character") return;
 
-  console.log("[TEST] Character sheet rendered:", actor.name);
+    const reflexLabel = html[0].querySelector(
+        '.saves li.roll-data[data-save="reflex"] .sidebar_label'
+    );
 
-  
+    if (!reflexLabel || reflexLabel.querySelector(".my-button")) return;
+
+    const myButton = document.createElement("button");
+    myButton.type = "button";
+    myButton.className = "my-button";
+    myButton.setAttribute("aria-label", "Show Reflex save modifiers");
+    myButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+
+    reflexLabel.appendChild(myButton);
+
 });
