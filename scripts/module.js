@@ -24,7 +24,7 @@ Hooks.on('renderActorSheet', (app, html) => {
 
         myButton.addEventListener('click', () => {
             new Dialog({
-                title: `Degree of Success Adjustments`,
+                title: modifier.label,
                 content: `<p>${modifier.text}</p>`,
                 buttons: {
                     ok: {
