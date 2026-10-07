@@ -14,3 +14,37 @@
     align-items: center;
     white-space: nowrap;
 }
+
+.saves li.roll-data[data-save="fortitude"] .my-button {
+    justify-content: center;
+    width: 1.5em;
+    height: 12px;
+    padding: 0;
+    font-size: 1em;
+    line-height: 1;
+    border: none;
+    color: white;
+}
+
+.saves li.roll-data[data-save="fortitude"] .sidebar_label {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.saves li.roll-data[data-save="will"] .my-button {
+    justify-content: center;
+    width: 1.5em;
+    height: 12px;
+    padding: 0;
+    font-size: 1em;
+    line-height: 1;
+    border: none;
+    color: white;
+}
+
+.saves li.roll-data[data-save="will"] .sidebar_label {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
