@@ -6,10 +6,16 @@ Hooks.on('renderActorSheet', (app, html) => {
     console.log(`[TEST] Character sheet rendered: ${actor.name}`, actor);
 
     const modifiers = getDegreeOfSuccessAdjustments(actor);
-    console.log(modifiers)
+    const modifiersBySave = new Map();
     modifiers.forEach(modifier => {
+        const saveModifiers = modifiersBySave.get(modifier.selector) ?? [];
+        saveModifiers.push(modifier);
+        modifiersBySave.set(modifier.selector, saveModifiers);
+    });
+
+    modifiersBySave.forEach((saveModifiers, selector) => {
         const label = html[0].querySelector(
-            `.saves li.roll-data[data-save="${modifier.selector}"] .sidebar_label`
+            `.saves li.roll-data[data-save="${selector}"] .sidebar_label`
         );
 
         if (!label || label.querySelector('.my-button')) return;
@@ -17,15 +23,25 @@ Hooks.on('renderActorSheet', (app, html) => {
         const myButton = document.createElement('button');
         myButton.type = 'button';
         myButton.className = 'my-button';
-        myButton.setAttribute('aria-label', 'Show save modifiers');
+        myButton.setAttribute('aria-label', `Show ${selector} save modifiers`);
         myButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
 
         label.appendChild(myButton);
 
         myButton.addEventListener('click', () => {
+            const title = `${selector[0].toUpperCase()}${selector.slice(1)} Save Adjustments`;
+            const list = document.createElement('ul');
+            saveModifiers.forEach(modifier => {
+                const item = document.createElement('li');
+                const modifierLabel = document.createElement('strong');
+                modifierLabel.textContent = modifier.label;
+                item.append(modifierLabel, document.createTextNode(`: ${modifier.text}`));
+                list.appendChild(item);
+            });
+
             new Dialog({
-                title: modifier.label,
-                content: `<p>${modifier.text}</p>`,
+                title,
+                content: list.outerHTML,
                 buttons: {
                     ok: {
                         label: "OK",
@@ -107,4 +123,3 @@ Hooks.on('renderActorSheet', (app, html) => {
         };
     }
 });
-
